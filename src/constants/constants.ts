@@ -69,7 +69,7 @@ export const FEATURES = [
     description:
       "Watch on smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players and more.",
     video: "",
-    image: "../images/misc/home-tv.jpg",
+    image: "/images/misc/home-tv.jpg",
     alt: "Roseflix on TV",
   },
   {
@@ -78,7 +78,7 @@ export const FEATURES = [
     description:
       "Save your favorites easily and always have something to watch.",
     video: "",
-    image: "../images/misc/home-mobile.jpg",
+    image: "/images/misc/home-mobile.jpg",
     alt: "Roseflix on mobile",
     direction: "row-reverse",
   },
@@ -87,7 +87,7 @@ export const FEATURES = [
     title: "Watch everywhere.",
     description:
       "Stream unlimited movies and TV shows on your phone, tablet, laptop and TV without paying more.",
-    image: "../images/misc/home-imac.jpg",
+    image: "/images/misc/home-imac.jpg",
     alt: "Roseflix on different devices",
   },
 ];
