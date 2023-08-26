@@ -5,6 +5,9 @@ import { useUser } from "../context/UserContext";
 import logoImg from "../images/branding/netflix_logo.png";
 import { Profile, ShowOverview } from "../types/AllTypes";
 import { HEADER_LINKS } from "../constants/constants";
+import { SECTIONS } from "../api/movieEndpoints";
+import movieHttp from "../api/movie";
+
 type HeaderContainerType = {
   logoOnly?: boolean;
   profile?: Profile;
@@ -28,6 +31,34 @@ function HeaderContainer({
   const { userDetails, setUserDetails } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleSearch = () => {
+    if (setSearchResult) {
+      if (searchTerm) {
+        const endPoint =
+          category === "series"
+            ? SECTIONS.series.helpers.searchTV.replace("{{query}}", searchTerm)
+            : SECTIONS.movies.helpers.searchMovie.replace(
+                "{{query}}",
+                searchTerm
+              );
+        movieHttp
+          .get(endPoint)
+          .then(({ data }: any) => {
+            data.results.sort((a: ShowOverview, b: ShowOverview) =>
+              a.popularity > b.popularity
+                ? -1
+                : b.popularity > a.popularity
+                ? 1
+                : 0
+            );
+            setSearchResult(data.results);
+          })
+          .catch((e: any) => console.log(e));
+      } else {
+        setSearchResult();
+      }
+    }
+  };
   const renderNavLinks = () => {
     return window.innerWidth <= 600 ? (
       <React.Fragment>
@@ -55,13 +86,27 @@ function HeaderContainer({
         <Header.Panel>
           <Header.Logo
             className={!userDetails ? "large" : ""}
-            src={`${logoImg}`}
+            src={logoImg}
             alt="Roseflix Logo"
             to={ROUTES.HOME.path}
           />
           {!logoOnly && userDetails && (
             <Header.Nav>{renderNavLinks()}</Header.Nav>
           )}
+        </Header.Panel>
+        <Header.Panel>
+          {!logoOnly &&
+            (userDetails ? (
+              <React.Fragment>
+                <Header.Search
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  handleSearch={handleSearch}
+                />
+              </React.Fragment>
+            ) : (
+              <Header.Button to={ROUTES.SIGNIN.path}>Sign In</Header.Button>
+            ))}
         </Header.Panel>
       </Header>
     </>
