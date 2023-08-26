@@ -8,7 +8,7 @@ type User = {
   _id: string;
   email: string;
   phone: string;
-  profiles?: Array<Profile>;
+  profiles?: Profile[];
 };
 
 type ComponentProp = {
@@ -21,14 +21,14 @@ type ShowOverview = {
   overview: string;
   poster_path: string | null;
   backdrop_path: string | null;
-  genre_ids: Array<number>;
+  genre_ids: number[];
   popularity: number;
   vote_average: number;
   vote_count: number;
   original_language: string;
   original_title?: string;
   title?: string;
-  origin_country?: Array<string>;
+  origin_country?: string[];
   name?: string;
   original_name?: string;
   [x: string]: any;
