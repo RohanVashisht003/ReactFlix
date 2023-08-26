@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { ComponentProp } from "../../types/AllTypes";
 import {
+  Button,
   Container,
   Logo,
   Nav,
   NavDropdown,
   NavLink,
   Panel,
+  Search,
+  SearchInput,
 } from "./styles/header";
 import { useNavigate } from "react-router-dom";
+import { BsSearch } from "react-icons/bs";
 
 type LogoProp = {
   to: string;
@@ -74,6 +78,41 @@ Header.NavDropdown = function EpisodeDropdown({
         </option>
       ))}
     </NavDropdown>
+  );
+};
+Header.Button = function HeaderButton({
+  children,
+  to,
+  ...restProps
+}: ComponentProp) {
+  const navigate = useNavigate();
+  return (
+    <Button onClick={() => navigate(to)} {...restProps}>
+      {children}
+    </Button>
+  );
+};
+
+Header.Search = function HeaderSearch({
+  searchTerm,
+  setSearchTerm,
+  handleSearch,
+  ...restProps
+}: HeaderSearchProp) {
+  const [searchActive, setSearchActive] = useState(false);
+  return (
+    <Search {...restProps}>
+      <BsSearch
+        onClick={() => setSearchActive((searchActive) => !searchActive)}
+      />
+      <SearchInput
+        value={searchTerm}
+        onChange={({ target }) => setSearchTerm(target.value)}
+        onKeyDown={({ code }) => (code === "Enter" ? handleSearch() : null)}
+        isActive={searchActive}
+        placeholder="Type film or series title"
+      />
+    </Search>
   );
 };
 export default Header;
