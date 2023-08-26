@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Scrollbar } from "react-scrollbars-custom";
+import { useState } from "react";
 import HeaderContainer from "../containers/header";
 import BannerContainer from "../containers/banner";
 import FeatureContainer from "../containers/feature";
 import FooterContainer from "../containers/footer";
+import FaqsContainer from "../containers/faqs";
 
 function Home() {
   const [isHeaderShown, setHeaderShown] = useState(false);
@@ -20,6 +20,7 @@ function Home() {
       <HeaderContainer isHeaderShown={isHeaderShown} />
       <BannerContainer />
       <FeatureContainer />
+      <FaqsContainer />
       <FooterContainer />
     </>
   );
