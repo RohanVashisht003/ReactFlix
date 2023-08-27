@@ -80,9 +80,21 @@ function HeaderContainer({
       ))
     );
   };
+
+  const handleChangeProfile = (profile?: Profile) => {
+    setSearchResult && setSearchResult();
+    setHeroTrailer && setHeroTrailer();
+    setProfile && setProfile(profile);
+  };
+
+  const signOut = () => {
+    localStorage.clear();
+    setUserDetails(undefined);
+  };
+
   return (
     <>
-      <Header>
+      <Header className={isHeaderShown ? "opaque" : ""}>
         <Header.Panel>
           <Header.Logo
             className={!userDetails ? "large" : ""}
@@ -103,6 +115,36 @@ function HeaderContainer({
                   setSearchTerm={setSearchTerm}
                   handleSearch={handleSearch}
                 />
+                <Header.Dropdown>
+                  {profile && (
+                    <Header.Avatar
+                      src={`/images/avatars/${profile.avatar}`}
+                      alt="User Avatar"
+                    />
+                  )}
+                </Header.Dropdown>
+                <Header.Menu>
+                  {userDetails.profiles &&
+                    userDetails.profiles.map((profile) => (
+                      <Header.MenuOption
+                        key={`${profile._id}_option`}
+                        profile={profile}
+                        onClick={() => handleChangeProfile(profile)}
+                      />
+                    ))}
+                  <Header.MenuOption
+                    className="no-img"
+                    onClick={() => handleChangeProfile()}
+                  >
+                    Manage Profiles
+                  </Header.MenuOption>
+                  <Header.MenuOption
+                    className="no-img"
+                    onClick={() => signOut()}
+                  >
+                    Sign out of Netflix
+                  </Header.MenuOption>
+                </Header.Menu>
               </React.Fragment>
             ) : (
               <Header.Button to={ROUTES.SIGNIN.path}>Sign In</Header.Button>

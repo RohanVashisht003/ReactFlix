@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { UserContext } from "./context/UserContext";
-import { Routes, Route, Navigate } from "react-router-dom";
-import SignIn from "./pages/SignIn";
-import Home from "./pages/Home";
+import { Routes, Route } from "react-router-dom";
 import { ROUTES } from "./constants/routes";
 
 function App() {
-  const userJSON = localStorage.getItem("user");
+  const userJSON = localStorage.getItem("netflix-user");
   const [userDetails, setUserDetails] = useState(
     userJSON !== null ? JSON.parse(userJSON) : null
   );

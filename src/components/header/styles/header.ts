@@ -1,10 +1,14 @@
 import styled from "styled-components";
+import { Dropdown as EpisodeDropdown } from "../../episode/styles/episode";
 
 type NavLinkProps = {
   readonly isSelected: boolean;
 };
 type SearchInputProps = {
   readonly isActive: boolean;
+};
+type DropdownProps = {
+  readonly isOption?: boolean;
 };
 
 export const Container = styled.div`
@@ -28,7 +32,6 @@ export const Panel = styled.div`
   display: flex;
   align-items: center;
 `;
-
 export const Nav = styled.div`
   display: inline-block;
   font-size: 0.85rem;
@@ -42,8 +45,16 @@ export const Nav = styled.div`
 export const Search = styled.div`
   display: flex;
   align-items: center;
-`;
 
+  .MuiSvgIcon-root {
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    @media (max-width: 700px) {
+      font-size: 1rem;
+    }
+  }
+`;
 export const SearchInput = styled.input`
   background-color: #141414;
   border: ${({ isActive }: SearchInputProps) =>
@@ -61,7 +72,6 @@ export const SearchInput = styled.input`
     font-size: 0.75rem;
   }
 `;
-
 export const NavLink = styled.a`
   color: #fff;
   text-decoration: none;
@@ -69,6 +79,7 @@ export const NavLink = styled.a`
   transition: color 0.4s;
   cursor: pointer;
   font-weight: ${({ isSelected }: NavLinkProps) => (isSelected ? 800 : 400)};
+
   &:hover {
     color: #b3b3b3;
   }
@@ -78,16 +89,41 @@ export const NavLink = styled.a`
   }
 `;
 
-export const NavDropdown = styled.select`
-  min-width: 4rem;
-  padding: 0.35rem;
-  background-color: rgb(36, 36, 36);
+export const NavDropdown = styled(EpisodeDropdown)`
+  font-size: 0.7rem;
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  padding: 0;
+  min-width: unset;
+  option {
+    color: #fff;
+    background: black;
+  }
 `;
 
 export const Logo = styled.img`
   width: 8rem;
-  margin: 0.5rem 2rem 0m5rem 3rem;
+  margin: 0.5rem 2rem 0.5rem 3rem;
+  object-fit: contain;
+  cursor: pointer;
+
+  &.large {
+    width: 13rem;
+    @media (max-width: 1000px) {
+      width: 10rem;
+    }
+    @media (max-width: 700px) {
+      width: 8rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    width: 5rem;
+    margin: 0.5rem;
+  }
 `;
+
 export const Button = styled.button`
   background-color: #e50914;
   color: #fff;
@@ -102,5 +138,67 @@ export const Button = styled.button`
 
   &:hover {
     background-color: #9c151c;
+  }
+`;
+
+export const Menu = styled.div`
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  position: absolute;
+  top: 3.1rem;
+  right: 3.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.8rem;
+  border: 1px solid #69696979;
+  min-width: 10rem;
+  padding: 0.75rem 0;
+  transition: all 0.1s ease-in;
+
+  &:hover {
+    opacity: 1;
+    pointer-events: auto;
+  }
+`;
+
+export const MenuOption = styled.div`
+  display: flex;
+  place-items: center;
+  padding: 0.1rem 0.25rem;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.no-img {
+    font-weight: 600;
+    padding: 0.75rem;
+  }
+`;
+export const Avatar = styled.img`
+  width: 2.25rem;
+  border-radius: 0.25rem;
+  margin: ${({ isOption }: DropdownProps) =>
+    isOption ? "0.25rem 0.5rem" : "0"};
+  object-fit: contain;
+
+  @media (max-width: 700px) {
+    margin: 0 1rem 0 0.5rem;
+  }
+`;
+export const Dropdown = styled.div`
+  margin: 0 3.5rem 0 1.5rem;
+  cursor: pointer;
+  &:hover {
+    ${Menu} {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 700px) {
+    margin: 0 1rem 0 0.5rem;
   }
 `;

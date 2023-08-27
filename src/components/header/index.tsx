@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { ComponentProp } from "../../types/AllTypes";
 import {
+  Avatar,
   Button,
   Container,
+  Dropdown,
   Logo,
+  Menu,
+  MenuOption,
   Nav,
   NavDropdown,
   NavLink,
@@ -32,6 +36,10 @@ type HeaderNavLinkProp = {
 type DropdownOption = {
   title: string;
   value: string;
+};
+
+Header.Avatar = function HeaderAvatar({ ...restProps }: ComponentProp) {
+  return <Avatar {...restProps} />;
 };
 
 function Header({ children, ...restProps }: ComponentProp) {
@@ -113,6 +121,40 @@ Header.Search = function HeaderSearch({
         placeholder="Type film or series title"
       />
     </Search>
+  );
+};
+
+Header.Dropdown = function HeaderDropdown({
+  children,
+  ...restProps
+}: ComponentProp) {
+  return <Dropdown {...restProps}>{children}</Dropdown>;
+};
+
+Header.Menu = function HeaderMenu({ children, ...restProps }: ComponentProp) {
+  return <Menu {...restProps}>{children}</Menu>;
+};
+
+Header.MenuOption = function HeaderMenuOption({
+  profile,
+  children,
+  ...restProps
+}: ComponentProp) {
+  return (
+    <MenuOption {...restProps}>
+      {profile && profile.avatar ? (
+        <React.Fragment>
+          <Avatar
+            src={`/images/avatars/${profile.avatar}`}
+            alt={`${profile.name} Avatar`}
+            isOption
+          />
+          {profile.name}
+        </React.Fragment>
+      ) : (
+        children
+      )}
+    </MenuOption>
   );
 };
 export default Header;

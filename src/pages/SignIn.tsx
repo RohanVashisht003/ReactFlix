@@ -5,6 +5,7 @@ import { mainHttp } from "../api/mainEndpoints";
 import { useUser } from "../context/UserContext";
 import { ROUTES } from "../constants/routes";
 import FooterContainer from "../containers/footer";
+import Scrollbar from "react-custom-scrollbars-2";
 
 function SignIn() {
   const { setUserDetails } = useUser();
@@ -12,9 +13,10 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isTouched, setIsTouched] = useState({ email: false, password: false });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHeaderShown, setHeaderShown] = useState(false);
   const emailInvalid = isTouched.email && email === "";
   const passwordInvalid = isTouched.password && password === "";
-  const [isLoading, setIsLoading] = useState(false);
   const canProceed = password && email && !passwordInvalid && !emailInvalid;
 
   const handleSignIn = (e: any) => {
@@ -39,66 +41,81 @@ function SignIn() {
     }
   };
 
+  const handleOnScroll = (scrollTop: number) => {
+    if (scrollTop > 100 && !isHeaderShown) {
+      setHeaderShown(true);
+    } else if (scrollTop <= 100 && isHeaderShown) {
+      setHeaderShown(false);
+    }
+  };
+
   return (
     <>
-      <HeaderContainer logoOnly isHeaderShown={true} />
-      <Form>
-        <Form.Title>Sign In</Form.Title>
-        <Form.FormGroup onSubmit={handleSignIn} method="POST">
-          {errorMsg && <Form.Error className="boxed">{errorMsg}</Form.Error>}
-          <Form.Input
-            placeholder="Email or phone number"
-            value={email}
-            onChange={({ target }: any) => {
-              if (!isTouched.email) {
-                setIsTouched((prevIsTouched) => {
-                  return { ...prevIsTouched, email: true };
-                });
+      <Scrollbar
+        className="main-scrollbar"
+        onScroll={({ scrollTop }: any) => handleOnScroll(scrollTop)}
+      >
+        <HeaderContainer logoOnly isHeaderShown={isHeaderShown} />
+        <Form>
+          <Form.Title>Sign In</Form.Title>
+          <Form.FormGroup onSubmit={handleSignIn} method="POST">
+            {errorMsg && <Form.Error className="boxed">{errorMsg}</Form.Error>}
+            <Form.Input
+              placeholder="Email or phone number"
+              value={email}
+              onChange={({ target }: any) => {
+                // if (!isTouched.email) {
+                //   setIsTouched((prevIsTouched) => {
+                //     return { ...prevIsTouched, email: true };
+                //   });
+                //   setEmail(target.value);
+                // }
                 setEmail(target.value);
-              }
-            }}
-            className={emailInvalid ? "has-error" : ""}
-          />
-          {emailInvalid && (
-            <Form.Error>Please enter your email or phone number.</Form.Error>
-          )}
-          <Form.Input
-            type="password"
-            placeholder="Password"
-            autoComplete="off"
-            value={password}
-            onChange={({ target }: any) => {
-              if (!isTouched.password)
-                setIsTouched((prevIsTouched) => {
-                  return { ...prevIsTouched, password: true };
-                });
-              setPassword(target.value);
-            }}
-            className={passwordInvalid ? "has-error" : ""}
-          />
-          {passwordInvalid && (
-            <Form.Error>Please enter your password.</Form.Error>
-          )}
-          <Form.Button disabled={!canProceed || isLoading} type="submit">
-            {isLoading ? (
-              <React.Fragment>
-                <Form.Spinner />
-                Signing in...
-              </React.Fragment>
-            ) : (
-              "Sign In"
+              }}
+              className={emailInvalid ? "has-error" : ""}
+            />
+            {emailInvalid && (
+              <Form.Error>Please enter your email or phone number.</Form.Error>
             )}
-          </Form.Button>
-        </Form.FormGroup>
-        <Form.Text>
-          New to Roseflix?
-          <Form.Link to={ROUTES.SIGNUP.path}>Sign up now</Form.Link>.
-        </Form.Text>
-        <Form.TextSmall>
-          This page is protected by Google reCAPTCHA to ensure you're not a bot.
-        </Form.TextSmall>
-      </Form>
-      <FooterContainer />
+            <Form.Input
+              type="password"
+              placeholder="Password"
+              autoComplete="off"
+              value={password}
+              onChange={({ target }: any) => {
+                if (!isTouched.password)
+                  setIsTouched((prevIsTouched) => {
+                    return { ...prevIsTouched, password: true };
+                  });
+                setPassword(target.value);
+              }}
+              className={passwordInvalid ? "has-error" : ""}
+            />
+            {passwordInvalid && (
+              <Form.Error>Please enter your password.</Form.Error>
+            )}
+            <Form.Button disabled={!canProceed || isLoading} type="submit">
+              {isLoading ? (
+                <React.Fragment>
+                  <Form.Spinner />
+                  Signing in...
+                </React.Fragment>
+              ) : (
+                "Sign In"
+              )}
+            </Form.Button>
+          </Form.FormGroup>
+          <Form.Text>
+            New to Roseflix?
+            <Form.Link to={ROUTES.SIGNUP.path}>Sign up now</Form.Link>.
+          </Form.Text>
+          <Form.TextSmall>
+            This page is protected by Google reCAPTCHA to ensure you're not a
+            bot.
+          </Form.TextSmall>
+        </Form>
+        <FooterContainer />
+      </Scrollbar>
     </>
   );
 }
